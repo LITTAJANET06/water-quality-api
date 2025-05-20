@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template_string
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
 import logging
@@ -11,7 +11,7 @@ CORS(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Airtable Configuration from environment variables
+# Airtable Config via environment variables
 AIRTABLE_BASE_ID = os.getenv('AIRTABLE_BASE_ID', 'appqd5RgY61IFtaCW')
 AIRTABLE_TABLE_NAME = os.getenv('AIRTABLE_TABLE_NAME', 'Water data')
 AIRTABLE_PAT = os.getenv('AIRTABLE_PAT', 'your_fallback_token_here')
@@ -72,39 +72,9 @@ def get_airtable_data():
     response = requests.get(AIRTABLE_URL, headers=HEADERS)
     response.raise_for_status()
     records = response.json().get('records', [])
-    
-    formatted = []
-    for record in records:
-        fields = record.get("fields", {})
-        formatted.append(fields)
 
+    formatted = [record.get("fields", {}) for record in records]
     return jsonify(formatted)
-
-@app.route('/dashboard')
-@handle_errors
-def dashboard():
-    response = requests.get(AIRTABLE_URL, headers=HEADERS)
-    response.raise_for_status()
-    records = response.json().get('records', [])
-    rows = [record.get("fields", {}) for record in records]
-
-    return render_template_string("""
-    <html><head><title>Water Quality Dashboard</title></head><body>
-    <h2>Water Quality Data</h2>
-    <table border="1" cellpadding="5">
-      <tr><th>Timestamp</th><th>pH</th><th>Turbidity</th><th>Flow</th><th>Water Level</th></tr>
-      {% for r in rows %}
-      <tr>
-        <td>{{ r['Timestamp'] }}</td>
-        <td>{{ r['pH'] }}</td>
-        <td>{{ r['Turbidity'] }}</td>
-        <td>{{ r['Flow'] }}</td>
-        <td>{{ r['Water Level'] }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    </body></html>
-    """, rows=rows)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
