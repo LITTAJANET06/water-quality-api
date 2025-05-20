@@ -81,6 +81,22 @@ def get_airtable_data():
 
     return jsonify(formatted)
 
+@app.route('/data', methods=['GET'])
+@handle_errors
+def get_airtable_data():
+    response = requests.get(AIRTABLE_URL, headers=HEADERS)
+    response.raise_for_status()
+    records = response.json().get('records', [])
+    
+    # Extract just the fields
+    formatted = []
+    for record in records:
+        fields = record.get("fields", {})
+        formatted.append(fields)
+
+    return jsonify(formatted)
+
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
