@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Water Quality Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            padding-top: 30px;
+            color: #333;
+        }
+
+        .embed-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Water Quality Data</h1>
+    <div class="embed-container">
+        <iframe class="airtable-embed"
+                src="https://airtable.com/embed/shrXXXXXXXXXXXXXX?backgroundColor=blue"
+                frameborder="0"
+                onmousewheel=""
+                style="background: transparent;">
+        </iframe>
+    </div>
+</body>
+</html>
