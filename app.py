@@ -6,6 +6,7 @@ import os
 from functools import wraps
 
 app = Flask(__name__)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False  # Disable pretty print globally
 CORS(app)
 
 logging.basicConfig(level=logging.INFO)
