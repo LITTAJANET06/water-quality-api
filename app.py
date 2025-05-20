@@ -66,20 +66,6 @@ def submit_data():
 
     return jsonify({"success": True, "message": "Data sent to Airtable"})
     
-@app.route('/data', methods=['GET'])
-@handle_errors
-def get_airtable_data():
-    response = requests.get(AIRTABLE_URL, headers=HEADERS)
-    response.raise_for_status()
-    records = response.json().get('records', [])
-    
-    # Extract just the fields
-    formatted = []
-    for record in records:
-        fields = record.get("fields", {})
-        formatted.append(fields)
-
-    return jsonify(formatted)
 
 @app.route('/data', methods=['GET'])
 @handle_errors
